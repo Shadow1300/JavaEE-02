@@ -29,6 +29,10 @@
     <module>JavaEE-02</module>
     <module>core</module>
     <module>db</module>
+    <module>JavaEE--SpringMVC</module>
+      <module>JavaEE-SpringMVC</module>
+      <module>MAVEN</module>
+      <module>SpringMVC</module>
   </modules>
   <groupId>org.example</groupId>
   <artifactId>JavaEE</artifactId>
@@ -72,6 +76,12 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.2.5.RELEASE</version>
     </dependency>
 
 
