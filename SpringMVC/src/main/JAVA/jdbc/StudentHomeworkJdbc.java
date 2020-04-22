@@ -6,6 +6,7 @@ import model.SubmitHomework;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import service.JdbcService;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,13 +33,35 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            resultSet=statement.executeQuery(sqlString);
+            connection.commit();
 
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        ResultSet resultSet=statement.executeQuery(sqlString);
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
         //获取执行结果
         if(resultSet.next()){
@@ -62,14 +85,35 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        //ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            int resultSet=statement.executeUpdate(sqlString);
+            connection.commit();
 
-
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        int resultSet=statement.executeUpdate(sqlString);
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
     }
 
     //发布作业
@@ -86,14 +130,37 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        //ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            int resultSet=statement.executeUpdate(sqlString);
+            connection.commit();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
 
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        int resultSet=statement.executeUpdate(sqlString);
     }
 
     //提交作业
@@ -102,21 +169,47 @@ public class StudentHomeworkJdbc {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String submit_time=df.format(submitHomework.getSubmit_time());
 
+        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
+        JdbcService jdbcService=(JdbcService)applicationContext.getBean("jdbcService");
+
         //数据库执行语句
-        String sqlString="insert into zy.submit_homework(student_id,homework_id,homework_title,homework_content,submit_time,homework_endtime) values (\""+submitHomework.getStudent_id()+"\",\""+submitHomework.getHomework_id()+"\",\""+submitHomework.getHomework_title()+"\",\""+submitHomework.getHomework_content()+"\",\""+submit_time+"\",\""+this.selectEndtime(submitHomework.getHomework_id())+"\")";
+        String sqlString="insert into zy.submit_homework(student_id,homework_id,homework_title,homework_content,submit_time,homework_endtime) values (\""+submitHomework.getStudent_id()+"\",\""+submitHomework.getHomework_id()+"\",\""+submitHomework.getHomework_title()+"\",\""+submitHomework.getHomework_content()+"\",\""+submit_time+"\",\""+jdbcService.selectEndtime(submitHomework.getHomework_id())+"\")";
 
         System.out.println(sqlString);
 
         //创造链接
-        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
+       // ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        //ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            int resultSet=statement.executeUpdate(sqlString);
+            connection.commit();
 
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
-        //statement做一些 增删改查
-        int resultSet=statement.executeUpdate(sqlString);
     }
 
     //查询截止时间
@@ -128,17 +221,37 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            resultSet=statement.executeQuery(sqlString);
+            connection.commit();
 
-
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        ResultSet resultSet=statement.executeQuery(sqlString);
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
         String out="";
-
         //获取执行结果
         while(resultSet.next()){
             out=resultSet.getString("homework_endtime");
@@ -157,13 +270,35 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            resultSet=statement.executeQuery(sqlString);
+            connection.commit();
 
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        ResultSet resultSet=statement.executeQuery(sqlString);
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
         //获取执行结果
         while(resultSet.next()){
@@ -193,13 +328,35 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            resultSet=statement.executeQuery(sqlString);
+            connection.commit();
 
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        ResultSet resultSet=statement.executeQuery(sqlString);
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
         //获取执行结果
         while(resultSet.next()){
@@ -225,13 +382,35 @@ public class StudentHomeworkJdbc {
         //创造链接
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         DatabasePool pool=(DatabasePool) applicationContext.getBean("pool");
-        Connection connection= pool.getHikariDataSource().getConnection();
+        Connection connection=null;
+        ResultSet resultSet = null;
+        try{
+            connection= pool.getHikariDataSource().getConnection();
+            connection.setAutoCommit(false);
+            //通过链接获取statement
+            Statement statement=connection.createStatement();
+            //statement做一些 增删改查
+            resultSet=statement.executeQuery(sqlString);
+            connection.commit();
 
-        //通过链接获取statement
-        Statement statement=connection.createStatement();
-
-        //statement做一些 增删改查
-        ResultSet resultSet=statement.executeQuery(sqlString);
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }finally{
+            try {
+                if(connection!=null){
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                System.out.println(e2);
+            }
+        }
 
         //获取执行结果
         while(resultSet.next()){
@@ -243,6 +422,7 @@ public class StudentHomeworkJdbc {
             list.add(homework);
         }
         return list;
+
     }
 
 }

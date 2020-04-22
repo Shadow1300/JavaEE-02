@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import service.JdbcService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 @org.springframework.stereotype.Controller
 public class AddHomeworkController implements Controller{
@@ -75,8 +77,8 @@ public class AddHomeworkController implements Controller{
             //开始传
             try {
                 ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
-                StudentHomeworkJdbc jdbc=(StudentHomeworkJdbc)applicationContext.getBean("JDBC");
-                jdbc.addHomework(homework);
+                JdbcService jdbcService=(JdbcService)applicationContext.getBean("jdbcService");
+                jdbcService.addHomework(homework);
                 ModelAndView mav = new ModelAndView("redirect:/addHomeworkSuccess");
                 return mav;
             } catch (SQLException e) {

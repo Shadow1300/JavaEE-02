@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import service.JdbcService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,10 +23,9 @@ public class SelectStudentController implements Controller {
         ModelAndView mav = new ModelAndView("selectStudent.jsp");
         try {
             ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
-            StudentHomeworkJdbc jdbc=(StudentHomeworkJdbc)applicationContext.getBean("JDBC");
-            List<Student> list= jdbc.selectStudent();
+            JdbcService jdbcService=(JdbcService)applicationContext.getBean("jdbcService");
+            List<Student> list= jdbcService.selectStudent();
             mav.addObject("list", list);
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

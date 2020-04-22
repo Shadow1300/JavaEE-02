@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import service.JdbcService;
 
 import java.sql.SQLException;
 
@@ -53,8 +54,8 @@ public class HelloController implements Controller {
         else{
             try {
                 ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
-                StudentHomeworkJdbc jdbc=(StudentHomeworkJdbc)applicationContext.getBean("JDBC");
-                String answer= jdbc.selectStudent(student);
+                JdbcService jdbcService=(JdbcService)applicationContext.getBean("jdbcService");
+                String answer= jdbcService.selectStudent(student);
                 if(answer.equals("success")){
                     ModelAndView mav = new ModelAndView("redirect:/Main");
                     return mav;

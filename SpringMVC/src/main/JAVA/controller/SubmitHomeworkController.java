@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import service.JdbcService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,8 +77,8 @@ public class SubmitHomeworkController implements Controller{
         else {
             try {
                 ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
-                StudentHomeworkJdbc jdbc=(StudentHomeworkJdbc)applicationContext.getBean("JDBC");
-                jdbc.submitHomework(submitHomework);
+                JdbcService jdbcService=(JdbcService)applicationContext.getBean("jdbcService");
+                jdbcService.submitHomework(submitHomework);
                 ModelAndView mav = new ModelAndView("redirect:/submitHomeworkSuccess");
                 return mav;
             } catch (SQLException e) {
