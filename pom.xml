@@ -33,6 +33,8 @@
       <module>JavaEE-SpringMVC</module>
       <module>MAVEN</module>
       <module>SpringMVC</module>
+      <module>SpringCloud</module>
+    <module>MyBatis</module>
   </modules>
   <groupId>org.example</groupId>
   <artifactId>JavaEE</artifactId>
@@ -83,6 +85,7 @@
       <artifactId>spring-webmvc</artifactId>
       <version>5.2.5.RELEASE</version>
     </dependency>
+
 
 
   </dependencies>
